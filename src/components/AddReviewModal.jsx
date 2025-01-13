@@ -3,7 +3,6 @@ import { useState } from "react";
 import WarningIcon from "@mui/icons-material/Warning";
 import axiosInstance from "../apis/axiosConfig";
 import { toast } from "react-toastify";
-import Loader from "./Loader";
 const AddReviewModal = ({
   isOpen,
   onClose,

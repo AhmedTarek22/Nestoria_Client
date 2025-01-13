@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ProductCard from "../components/ProductCard.js";
 import Pagination from "../components/Pagination.js";
@@ -33,22 +32,6 @@ const Shop = () => {
     "Office Decoration",
     "Indoor Decoration",
     "Outdoor Decoration",
-    // `${translate.All}`,
-    // `${translate.Sofa}`,
-    // `${translate.Outdoor_Sofa}`,
-    // `${translate.Dining_Table}`,
-    // `${translate.Coffee_Table}`,
-    // `${translate.Bookshelf}`,
-    // `${translate.Bed_Frame}`,
-    // `${translate.Desk}`,
-    // `${translate.Wardrobe}`,
-    // `${translate.Couch}`,
-    // `${translate.Bed}`,
-    // `${translate.Recliners}`,
-    // `${translate.Home_Decoration}`,
-    // `${translate.Office_Decoration}`,
-    // `${translate.Indoor_Decoration}`,
-    // `${translate.Outdoor_Decoration}`,
   ]);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [priceRange, setPriceRange] = useState([10, 2499]);
@@ -83,9 +66,9 @@ const Shop = () => {
 
   const fetchProducts = (page = 1, category = "All", maxPrice = 2499) => {
     setIsLoading(true);
-    axios
+    axiosInstance
       .get(
-        `https://nestoria-server.vercel.app/api/v1/fur/products?page=${page}&limit=${productsPerPage}&category=${
+        `/api/v1/fur/products?page=${page}&limit=${productsPerPage}&category=${
           category !== "All" ? category : ""
         }&maxPrice=${maxPrice}`
       )
@@ -143,7 +126,6 @@ const Shop = () => {
       toast.error("you should sign in first");
       return;
     }
-
     if (isAdding) {
       axiosInstance
         .post(`/api/v1/fur/favorites/${productId}`)
@@ -177,7 +159,6 @@ const Shop = () => {
   return (
     <>
       <HeaderPages namePage={`${translate.shop}`} />
-
       <div className="bg-[#030303] p-5">
         {/* إضافة أيقونات التحكم بعدد الأعمدة */}
         <div className="flex justify-end m-4 space-x-2">
@@ -223,7 +204,6 @@ const Shop = () => {
             </button>
           ))}
         </div>
-
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* قسم الفئات مع الخط الفاصل */}
           <div className="col-span-1 relative ml-4">
@@ -340,7 +320,6 @@ const Shop = () => {
             )}
           </div>
         </div>
-
         <div className="pt-8">
           <Pagination
             currentPage={currentPage}

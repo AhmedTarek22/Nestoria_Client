@@ -3,7 +3,7 @@ import axios from "axios";
 const token = localStorage.getItem("token");
 
 const axiosInstance = axios.create({
-  baseURL: "https://nestoria-server.vercel.app",
+  baseURL: "https://nestoria-server-zeta.vercel.app",
 });
 
 axiosInstance.interceptors.request.use(

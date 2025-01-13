@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -13,6 +12,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { RiRadioButtonLine } from "react-icons/ri";
 import { useSelector } from "react-redux";
+import axiosInstance from "../apis/axiosConfig";
 
 function AllWorkshops() {
   const translate = useSelector((state) => state.language.translation);
@@ -30,8 +30,8 @@ function AllWorkshops() {
 
   useEffect(() => {
     const fetchClientAccounts = async () => {
-      const req = await axios(
-        `https://nestoria-server.vercel.app/api/v1/admin/allworkshops?keyword=${keyword}&category=${status}&page=${page}`
+      const req = await axiosInstance(
+        `/api/v1/admin/allworkshops?keyword=${keyword}&category=${status}&page=${page}`
       );
       console.log(req.data);
       setWorkshops(req.data.clientAccounts);
@@ -78,8 +78,8 @@ function AllWorkshops() {
       return;
     }
     try {
-      await axios.delete(
-        `https://nestoria-server.vercel.app/api/v1/admin/deleteclient/${encodeURIComponent(
+      await axiosInstance.delete(
+        `/api/v1/admin/deleteclient/${encodeURIComponent(
           email
         )}`
       );

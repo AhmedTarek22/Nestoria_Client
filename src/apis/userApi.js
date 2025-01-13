@@ -4,7 +4,7 @@
 //     withCredentials:true})
 // export default myAxios
 import http from "./http.js"
-const apiUrl=`https://nestoria-server.vercel.app/api/v1/fur`;
+const apiUrl=`https://nestoria-server-zeta.vercel.app/api/v1/fur`;
 const createUser= data => http.post(`${apiUrl}/auth/signup`,data)
 const userApi={createUser}
 export default userApi

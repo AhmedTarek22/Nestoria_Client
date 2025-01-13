@@ -1,14 +1,10 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ProductCard from "../components/ProductCard.js";
 import Pagination from "../components/Pagination.js";
 import axiosInstance from "../apis/axiosConfig.js";
 import Loader from "../components/Loader.jsx";
-
 import { toast } from "react-toastify";
-
-import { FaHome } from "react-icons/fa";
 import { useSearchContext } from "../context/SearchContext.jsx";
 import { FaTh, FaThLarge, FaThList, FaBars } from "react-icons/fa";
 
@@ -65,9 +61,9 @@ const Shop = () => {
   const fetchProducts = (page = 1, category = "All", maxPrice = 2499) => {
     // if (!search) {
     setIsLoading(true);
-    axios
+    axiosInstance
       .get(
-        `https://nestoria-server.vercel.app/api/v1/fur/products?page=${page}&limit=${productsPerPage}&category=${
+        `/api/v1/fur/products?page=${page}&limit=${productsPerPage}&category=${
           category !== "All" ? category : ""
         }&maxPrice=${maxPrice}`
       )

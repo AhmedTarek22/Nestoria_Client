@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import userloginApi from "../apis/userloginApi";
-
-import axios from "axios";
 import { useSelector } from "react-redux";
+import axiosInstance from "../apis/axiosConfig";
 
 function ConfirmEmail() {
   const navigate = useNavigate();
@@ -17,8 +16,8 @@ function ConfirmEmail() {
     e.preventDefault();
 
     try {
-      await axios.get(
-        `https://nestoria-server.vercel.app/api/v1/fur/users/verify/${paramValue}`,
+      await axiosInstance.get(
+        `/api/v1/fur/users/verify/${paramValue}`,
         {
           headers: {
             "Content-Type": "application/json",

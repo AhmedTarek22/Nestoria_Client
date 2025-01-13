@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import InputField from "../components/Input";
-import axios from "axios";
 import { toast } from "react-toastify";
 import Loader from "../components/Loader";
 import { useSelector } from "react-redux";
+import axiosInstance from "../apis/axiosConfig";
 function ForgotPassword() {
   const translate = useSelector((state) => state.language.translation);
   const [user, setUser] = useState({
@@ -63,8 +63,8 @@ function ForgotPassword() {
     if (Object.keys(newErrors).length === 0) {
       try {
         setIsLoading(true);
-        const { data: user2 } = await axios.post(
-          "https://nestoria-server.vercel.app/api/v1/fur/auth/forgotpassword",
+        const { data: user2 } = await axiosInstance.post(
+          "/api/v1/fur/auth/forgotpassword",
           user,
           {
             headers: { "Content-Type": "application/json" },

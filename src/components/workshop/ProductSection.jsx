@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faStar,
@@ -18,8 +17,8 @@ const ProductCard = ({ workshopId }) => {
 
   const fetchProducts = async (page = 1) => {
     try {
-      const response = await axios.get(
-        `https://nestoria-server.vercel.app/api/v1/fur/users/${workshopId}`
+      const response = await axiosInstance.get(
+        `/api/v1/fur/users/${workshopId}`
       );
       setProducts(response.data.targetProducts);
       console.log("my products :", response.data.targetProducts);

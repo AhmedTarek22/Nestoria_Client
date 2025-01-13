@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import "../../css modules/heroSection.module.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar, faStarHalfAlt } from "@fortawesome/free-solid-svg-icons";
 import ProductCarousel from "./ProductSection";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Loader from "../Loader";
 import axiosInstance from "../../apis/axiosConfig";
-import { toast } from "react-toastify";
 import { FaStar } from "react-icons/fa";
 
 import {

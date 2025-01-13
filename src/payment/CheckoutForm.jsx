@@ -8,7 +8,6 @@ import {
 } from "@stripe/react-stripe-js";
 import axiosInstance from "../apis/axiosConfig";
 import { toast } from "react-toastify";
-import Loader from "../components/Loader";
 import { useNavigate } from "react-router-dom";
 
 const CheckoutForm = (props) => {

@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -12,6 +11,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { RiRadioButtonLine } from "react-icons/ri";
 import { useSelector } from "react-redux";
+import axiosInstance from "../apis/axiosConfig";
 function AllClients() {
   const translate = useSelector((state) => state.language.translation);
   const [open, setOpen] = useState(false);
@@ -28,8 +28,8 @@ function AllClients() {
 
   useEffect(() => {
     const fetchClientAccounts = async () => {
-      const req = await axios(
-        `https://nestoria-server.vercel.app/api/v1/admin/allclients?keyword=${keyword}&category=${status}&page=${page}`
+      const req = await axiosInstance(
+        `/api/v1/admin/allclients?keyword=${keyword}&category=${status}&page=${page}`
       );
       console.log(req.data);
       setClients(req.data.clientAccounts);
@@ -76,10 +76,8 @@ function AllClients() {
       return;
     }
     try {
-      await axios.delete(
-        `https://nestoria-server.vercel.app/api/v1/admin/deleteclient/${encodeURIComponent(
-          email
-        )}`
+      await axiosInstance.delete(
+        `/api/v1/admin/deleteclient/${encodeURIComponent(email)}`
       );
 
       const filteredClients = clients.filter(
@@ -189,7 +187,9 @@ function AllClients() {
                   }`}
                 />
               </p>
-              <p className="text-gray-600">{translate.Email}: {client.email}</p>
+              <p className="text-gray-600">
+                {translate.Email}: {client.email}
+              </p>
             </div>
             <div className="flex space-x-4">
               <button
@@ -239,7 +239,8 @@ function AllClients() {
                 {translate.Phone}:{selectedClient.phone}
               </Typography>
               <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                {translate.IsConfirm}: {JSON.stringify(selectedClient.isConfirm)}
+                {translate.IsConfirm}:{" "}
+                {JSON.stringify(selectedClient.isConfirm)}
               </Typography>
               <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                 {translate.Balance}:{selectedClient.balance}

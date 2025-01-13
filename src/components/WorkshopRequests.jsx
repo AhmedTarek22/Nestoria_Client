@@ -1,10 +1,10 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import Modal from "react-responsive-modal";
 import "react-responsive-modal/styles.css";
 import ModalImage from "react-modal-image";
 import Swal from "sweetalert2";
 import { useSelector } from "react-redux";
+import axiosInstance from "../apis/axiosConfig";
 
 function WorkshopRequests() {
   const translate = useSelector((state) => state.language.translation);
@@ -15,8 +15,8 @@ function WorkshopRequests() {
 
   useEffect(() => {
     async function fetchRquests() {
-      const req = await axios.get(
-        "https://nestoria-server.vercel.app/api/v1/admin/workshoprequests"
+      const req = await axiosInstance.get(
+        "/api/v1/admin/workshoprequests"
       );
       console.log(req.data);
       setRequests(req.data.workshopReq);
@@ -39,8 +39,8 @@ function WorkshopRequests() {
       return;
     }
     try {
-      await axios.put(
-        `https://nestoria-server.vercel.app/api/v1/admin/acceptanceState/${encodeURIComponent(
+      await axiosInstance.put(
+        `/api/v1/admin/acceptanceState/${encodeURIComponent(
           email
         )}`,
         { state: "reject" }
@@ -75,8 +75,8 @@ function WorkshopRequests() {
       return;
     }
     try {
-      await axios.put(
-        `https://nestoria-server.vercel.app/api/v1/admin/acceptanceState/${encodeURIComponent(
+      await axiosInstance.put(
+        `/api/v1/admin/acceptanceState/${encodeURIComponent(
           email
         )}`,
         { state: "accept" }

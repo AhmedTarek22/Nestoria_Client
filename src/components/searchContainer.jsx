@@ -1,17 +1,16 @@
-import { CiSearch } from "react-icons/ci";
 import { IoIosSearch } from "react-icons/io";
 import { useSearchContext } from "../context/SearchContext";
 import { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../apis/axiosConfig";
 
 function SearchContainer({ setShowSearch }) {
   const [isClosed, setIsClosed] = useState(false);
   const { search, setSearch, setProducts } = useSearchContext();
   const navigate = useNavigate();
   const handleSearchQuery = () => {
-    axios
-      .get(`https://nestoria-server.vercel.app/api/v1/fur/products?keyword=${search}`)
+    axiosInstance
+      .get(`/api/v1/fur/products?keyword=${search}`)
       .then((res) => {
         setProducts(res.data.products);
         navigate("/shop");

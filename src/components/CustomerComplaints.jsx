@@ -1,6 +1,5 @@
 import EmailIcon from "@mui/icons-material/Email";
 import { Button, Typography } from "@mui/material";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { Pagination, Stack } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
@@ -12,6 +11,7 @@ import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import AdminLoader from "./adminLoader";
 import { Box } from "@mui/system";
 import Modal from "react-responsive-modal";
+import axiosInstance from "../apis/axiosConfig";
 function CustomerComplaints() {
   const [clients, setClients] = useState([]);
   const [page, setPage] = useState(1);
@@ -24,8 +24,8 @@ function CustomerComplaints() {
   const [selectedClient, setSelectedClient] = useState(null);
   useEffect(() => {
     const fetchClientAccounts = async () => {
-      const req = await axios(
-        `https://nestoria-server.vercel.app/api/v1/fur/problems/getComplaints?category=${status}&page=${page}`
+      const req = await axiosInstance(
+        `/api/v1/fur/problems/getComplaints?category=${status}&page=${page}`
       );
       console.log(req.data);
       setClients(req.data.complaints);
@@ -68,8 +68,8 @@ function CustomerComplaints() {
     if (client.problemState === "pending") {
       try {
         setIsLoading(true);
-        const req = await axios.post(
-          `https://nestoria-server.vercel.app/api/v1/fur/problems/change-problem-state?_id=${client._id}`
+        const req = await axiosInstance.post(
+          `/api/v1/fur/problems/change-problem-state?_id=${client._id}`
         );
 
         const filterProblems = clients.map((p) =>

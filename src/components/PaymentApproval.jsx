@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import axiosInstance from "../apis/axiosConfig";
 import AdminLoader from "./adminLoader";
 import Swal from "sweetalert2";
-import axios from "axios";
 
 function PaymentApproval() {
   const [adminBalance, setAdminBalance] = useState({
@@ -121,7 +120,7 @@ function PaymentApproval() {
       setIsLoading(true);
       console.log(reqAmount);
 
-      await axios.post(`https://nestoria-server.vercel.app/api/v1/admin/create-transfer`, {
+      await axiosInstance.post(`/api/v1/admin/create-transfer`, {
         amount: reqAmount,
         currency: "usd",
         connectedAccountId: connectedAccountId,

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import {
   FaCheck,
   FaStar,
@@ -29,8 +28,8 @@ function ProductDetails() {
 
   useEffect(() => {
     setIsLoading(true);
-    axios
-      .get(`https://nestoria-server.vercel.app/api/v1/fur/products/${params.id}`)
+    axiosInstance
+      .get(`/api/v1/fur/products/${params.id}`)
       .then((res) => {
         setproduct(res.data.data.product);
         const convertColors = res.data.data.product.color.map((colorHex) => {

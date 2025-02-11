@@ -3,7 +3,6 @@ import { FaHeart, FaArrowsAltH, FaExpand } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import "../css modules/productCard.css";
 import axiosInstance from "../apis/axiosConfig";
-import { setLanguage } from "../Redux/languageSlice";
 import { useSelector } from "react-redux";
 
 const ProductCard = ({
@@ -14,7 +13,7 @@ const ProductCard = ({
   isSingleColumn, 
 }) => {
   const translate = useSelector((state) => state.language.translation);
-  const { myLang, translation } = useSelector((state) => state.language);
+  const { myLang } = useSelector((state) => state.language);
   const [isFavoriteState, setIsFavoriteState] = useState(isFavorite);
 
   const handleFavoriteClick = (e) => {

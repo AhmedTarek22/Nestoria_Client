@@ -1,5 +1,4 @@
 import { GiCheckMark } from "react-icons/gi";
-import { Link } from "react-router-dom";
 import { HeaderPages } from "../components/HeaderPages";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,8 +10,8 @@ import {
   faBed,
   faChair,
 } from "@fortawesome/free-solid-svg-icons";
-import IntroSection from "../components/IntroSection";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 function AboutUs() {
   const translate = useSelector((state) => state.language.translation);
@@ -305,12 +304,12 @@ function AboutUs() {
                 className="form-checkbox h-4 w-4 text-[--mainColor] rounded focus:ring-2 focus:ring-[--mainColor]"
               />
               <span>{translate.Your_span}</span>
-              <a
+              <Link
                 href="#"
                 className="text-blue-400 hover:text-blue-600 underline ml-2"
               >
                 {translate.Privacy_Policy}
-              </a>
+              </Link>
             </div>
           </div>
         </div>

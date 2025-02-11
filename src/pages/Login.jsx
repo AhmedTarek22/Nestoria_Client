@@ -13,7 +13,7 @@ import Loader from "../components/Loader";
 import { useSelector } from "react-redux";
 function Login() {
   const translate = useSelector((state) => state.language.translation);
-  const { setIsLogin, isLogin, setCurrentUser } = useUserInfoContext();
+  const { setIsLogin, setCurrentUser } = useUserInfoContext();
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState({
     email: "",

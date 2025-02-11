@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { HeaderPages } from "../components/HeaderPages";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import CheckoutForm from "../payment/CheckoutForm";
 import { ShippingAddress } from "../components/Profile components/ShippingAddress";
@@ -9,7 +9,11 @@ import { useSelector } from "react-redux";
 
 function Checkout() {
   const translate = useSelector((state) => state.language.translation);
-  const isOkAddress = false;
+  // const isOkAddress = false;
+  const location = useLocation();
+  const isCheckoutPage = location.pathname === "/checkout";
+  const isOkAddress = isCheckoutPage ? true : false;
+
   const [userAddress, setUserAdderss] = useState("");
   const [orderData, setOrderData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);

@@ -187,9 +187,7 @@ function AllClients() {
                   }`}
                 />
               </p>
-              <p className="text-gray-600">
-                {translate.Email}: {client.email}
-              </p>
+              <p className="text-gray-600">{translate.Email}: {client.email}</p>
             </div>
             <div className="flex space-x-4">
               <button
@@ -239,8 +237,7 @@ function AllClients() {
                 {translate.Phone}:{selectedClient.phone}
               </Typography>
               <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                {translate.IsConfirm}:{" "}
-                {JSON.stringify(selectedClient.isConfirm)}
+                {translate.IsConfirm}: {JSON.stringify(selectedClient.isConfirm)}
               </Typography>
               <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                 {translate.Balance}:{selectedClient.balance}

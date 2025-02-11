@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import { Pagination, Stack } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";

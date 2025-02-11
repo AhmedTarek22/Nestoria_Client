@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { FaRegEyeSlash } from "react-icons/fa";
+
 import { useSelector } from "react-redux";
 import axiosInstance from "../apis/axiosConfig";
-
 function ResetPassword() {
   const translate = useSelector((state) => state.language.translation);
   const [user, setUser] = useState({
@@ -82,7 +82,6 @@ function ResetPassword() {
         ) {
           setServerErr(error.response.data.message);
           // toast.error(serverErr);
-
           console.log(error.response.data);
         } else {
           setServerErr("Something went wrong. Please try again later.");
@@ -97,12 +96,10 @@ function ResetPassword() {
     <div className="flex justify-center items-center min-h-screen bg-[#171716]">
       <div className="bg-black p-10 rounded-xl shadow-xl w-full max-w-xl mx-auto">
         <h2 className="text-white text-3xl font-200 mb-6 text-center font-['Segoe UI']">
-          {" "}
           {translate.Reset_Password}
         </h2>
         <form onSubmit={handleSubmit}>
           <p className="text-red-500 text-md mt-2">{serverErr}</p>
-
           <label
             className="block text-gray-400 text-sm font-medium mb-2"
             htmlFor="email"
@@ -142,7 +139,6 @@ function ResetPassword() {
               )}
             </div>
           </div>
-
           <div className="flex items-center justify-center rounded-full border border-solid border-[#EA580C]">
             <button
               className="w-full bg-black  hover:bg-orange-600 hover:text-white text-orange-500 font-bold py-3 px-4 rounded-full focus:outline-none focus:ring-2 focus:ring-orange-500"

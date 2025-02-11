@@ -116,6 +116,22 @@ function Cart() {
     }
   };
 
+  const [coupons, setCoupons] = useState([]);
+  useEffect(() => {
+    const fetchCoupons = async () => {
+      try {
+        const res = await axiosInstance.get(
+          "/api/v1/fur/coupons/getAllCoupons"
+        );
+        if (res) {
+          setCoupons(res.data.coupons);
+        }
+      } catch (error) {
+        toast.error(error);
+      }
+    };
+    fetchCoupons();
+  }, []);
   const handleCoupon = (e) => {
     setCoupon(e.target.value);
   };
@@ -124,26 +140,18 @@ function Cart() {
     if (isUsedCupon) {
       return toast.error("Not allowed because coupon used");
     }
-    switch (coupon) {
-      case "A12H34":
-        setAfterCoupon(total - total * 0.4);
-        setIsUsedCoupon(true);
-        toast.success("Coupon done");
-        break;
-      case "ahmed":
-        setAfterCoupon(total - total * 0.2);
-        setIsUsedCoupon(true);
-        toast.success("Coupon done");
-        break;
-      case "tarek":
-        setAfterCoupon(total - total * 0.1);
-        setIsUsedCoupon(true);
-        toast.success("Coupon done");
-        break;
-      default:
-        setAfterCoupon(total);
-        toast.error("Invalid Coupon");
-        break;
+
+    const foundCoupon = coupons.find((c) => c.code === coupon);
+    if (foundCoupon) {
+      if (!foundCoupon.status) {
+        return toast.error("Coupon has expired");
+      }
+      setAfterCoupon(total - total * (foundCoupon.discount / 100));
+      setIsUsedCoupon(true);
+      toast.success("Coupon applied successfully");
+    } else {
+      setAfterCoupon(total);
+      toast.error("Invalid Coupon");
     }
   };
 

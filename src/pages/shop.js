@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ProductCard from "../components/ProductCard.js";
 import Pagination from "../components/Pagination.js";
@@ -83,9 +82,9 @@ const Shop = () => {
 
   const fetchProducts = (page = 1, category = "All", maxPrice = 2499) => {
     setIsLoading(true);
-    axios
+    axiosInstance
       .get(
-        `http://localhost:5000/api/v1/fur/products?page=${page}&limit=${productsPerPage}&category=${
+        `/api/v1/fur/products?page=${page}&limit=${productsPerPage}&category=${
           category !== "All" ? category : ""
         }&maxPrice=${maxPrice}`
       )

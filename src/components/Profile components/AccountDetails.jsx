@@ -8,6 +8,7 @@ import { IoMdStar } from "react-icons/io";
 
 export function AccountDetails() {
   const { currentUser } = useUserInfoContext();
+  const [isClickIconEdit, setIsClickIconEdit] = useState(false);
   const [showPassword, setShowPassword] = useState({
     currentPassword: false,
     newPassword: false,
@@ -151,13 +152,18 @@ export function AccountDetails() {
           newPassword: "",
           confirmNewPassword: "",
         });
+        setShowPassword({
+          currentPassword: false,
+          newPassword: false,
+          confirmNewPassword: false,
+        });
+        setIsClickIconEdit(false);
       } catch (err) {
         toast.error("Password incorrect");
       }
     }
   };
 
-  const [isClickIconEdit, setIsClickIconEdit] = useState(false);
   const handleEditIcon = () => {
     setIsClickIconEdit(!isClickIconEdit);
     setUserInfo({
@@ -173,7 +179,9 @@ export function AccountDetails() {
   return (
     <form
       onSubmit={(e) => handleUpdateUser(e)}
-      className={`relative flex flex-col gap-6 border border-[#929292] ${isClickIconEdit && "border-[#C26510]"} rounded-2xl py-3 px-5 `}
+      className={`relative flex flex-col gap-6 border border-[#929292] ${
+        isClickIconEdit && "border-[#C26510]"
+      } rounded-2xl py-3 px-5 `}
     >
       <div onClick={() => handleEditIcon()}>
         <FaUserEdit
@@ -183,7 +191,10 @@ export function AccountDetails() {
         />
       </div>
       <div className="flex flex-col gap-4 text-[#929292]">
-        <label>Full name</label>
+        <label className="flex items-center">
+          Full name
+          {isClickIconEdit && <IoMdStar className="text-red-700 ms-2" />}
+        </label>
         <input
           className="bg-transparent py-4 px-8 rounded-full border border-[#929292] focus:border-[#C26510] focus:outline-none duration-500"
           type="text"

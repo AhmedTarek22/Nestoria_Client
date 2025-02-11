@@ -128,6 +128,7 @@ export function ShippingAddress(props) {
     e.preventDefault();
     if (
       !userShipping.houseNumber ||
+      !userShipping.apartment ||
       !userShipping.city ||
       !userShipping.PINCode
     ) {
@@ -151,8 +152,10 @@ export function ShippingAddress(props) {
         );
         if (res) {
           toast.success("address added");
-          confirmAddress();
           setIsFoundedAddress(true);
+          if (!isOkAddress && isOkAddress !== undefined) {
+            confirmAddress();
+          }
         }
       } catch (error) {
         toast.error(error);
@@ -179,31 +182,33 @@ export function ShippingAddress(props) {
     } else if (errors.PINCodeError) {
       return toast.error("Fixed errors");
     } else {
-      if (!isOkAddress && isOkAddress !== undefined) {
+      if (isOkAddress) {
         return confirmAddress();
-      }
-      try {
-        const res = await axiosInstance.put(
-          "/api/v1/fur/shippingAddress/updateShippingAddress",
-          {
-            company: userShipping.company,
-            streetAddress: {
-              houseNumber: userShipping.houseNumber,
-              apartment: userShipping.apartment,
-            },
-            city: userShipping.city,
-            state: userShipping.state,
-            PINCode: userShipping.PINCode,
+      } else {
+        try {
+          const res = await axiosInstance.put(
+            "/api/v1/fur/shippingAddress/updateShippingAddress",
+            {
+              company: userShipping.company,
+              streetAddress: {
+                houseNumber: userShipping.houseNumber,
+                apartment: userShipping.apartment,
+              },
+              city: userShipping.city,
+              state: userShipping.state,
+              PINCode: userShipping.PINCode,
+            }
+          );
+          if (res) {
+            toast.success("address updated");
+            setIsEditAddress(false);
+            if (props.sendAddressToCheckout) {
+              props.sendAddressToCheckout(userShipping);
+            }
           }
-        );
-        if (res) {
-          toast.success("address updated");
-          if (props.sendAddressToCheckout) {
-            props.sendAddressToCheckout(userShipping);
-          }
+        } catch (error) {
+          toast.error(error);
         }
-      } catch (error) {
-        toast.error(error);
       }
     }
   };
@@ -220,6 +225,7 @@ export function ShippingAddress(props) {
       e.preventDefault();
     }
     setIsOkAddress(true);
+    setIsEditAddress(false);
     toast.success("Shipping address confirmed");
     if (props.sendAddressToCheckout) {
       props.sendAddressToCheckout(userShipping);
@@ -252,7 +258,6 @@ export function ShippingAddress(props) {
             name="company"
             onChange={(e) => handleChangeAddress(e)}
             value={userShipping.company}
-
             readOnly={!isEditAddress && !isUserShippingEmpty()}
           />
         </div>
@@ -290,7 +295,9 @@ export function ShippingAddress(props) {
         <label>Street address</label>
         <label className="flex items-center">
           House number and street name{" "}
-          {isEditAddress && <IoMdStar className="text-red-700 ms-2" />}
+          {(isEditAddress || !isFoundedAddress) && (
+            <IoMdStar className="text-red-700 ms-2" />
+          )}
         </label>
         <input
           className="bg-transparent py-4 px-8 rounded-full border border-[#929292] focus:border-[#C26510] focus:outline-none duration-500"
@@ -299,15 +306,19 @@ export function ShippingAddress(props) {
           placeholder="House number and street name"
           onChange={(e) => handleChangeAddress(e)}
           value={userShipping.houseNumber}
-
           readOnly={!isEditAddress && !isUserShippingEmpty()}
         />
-        <label>Apartment, suite, unit, etc, (optional)</label>
+        <label className="flex items-center">
+          Apartment, suite, unit, etc{" "}
+          {(isEditAddress || !isFoundedAddress) && (
+            <IoMdStar className="text-red-700 ms-2" />
+          )}
+        </label>
         <input
           className="bg-transparent py-4 px-8 rounded-full border border-[#929292] focus:border-[#C26510] focus:outline-none duration-500"
           type="text"
           name="apartment"
-          placeholder="Apartment, suite, unit, etc, (optional)"
+          placeholder="Apartment, suite, unit, etc"
           onChange={(e) => handleChangeAddress(e)}
           value={userShipping.apartment}
           readOnly={!isEditAddress && !isUserShippingEmpty()}
@@ -316,8 +327,10 @@ export function ShippingAddress(props) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
         <div className="flex flex-col gap-4 text-[#929292]">
           <label className="flex items-center">
-            Town/city{" "}
-            {isEditAddress && <IoMdStar className="text-red-700 ms-2" />}
+            Town/city
+            {(isEditAddress || !isFoundedAddress) && (
+              <IoMdStar className="text-red-700 ms-2" />
+            )}
           </label>
           <input
             className="bg-transparent py-4 px-8 rounded-full border border-[#929292] focus:border-[#C26510] focus:outline-none duration-500"
@@ -325,7 +338,6 @@ export function ShippingAddress(props) {
             name="city"
             onChange={(e) => handleChangeAddress(e)}
             value={userShipping.city}
-
             readOnly={!isEditAddress && !isUserShippingEmpty()}
           />
         </div>
@@ -342,7 +354,12 @@ export function ShippingAddress(props) {
         </div>
       </div>
       <div className="flex flex-col gap-4 text-[#929292]">
-        <label>PIN Code</label>
+        <label className="flex items-center">
+          PIN Code{" "}
+          {(isEditAddress || !isFoundedAddress) && (
+            <IoMdStar className="text-red-700 ms-2" />
+          )}
+        </label>
         <input
           className={`bg-transparent py-4 px-8 rounded-full border border-[#929292] ${
             !errors.PINCodeError && "focus:border-[#C26510]"
@@ -370,7 +387,7 @@ export function ShippingAddress(props) {
         )}
         {isFoundedAddress && !isEditAddress && (
           <div className="flex justify-between">
-            {!isOkAddress && isOkAddress !== undefined && (
+            {isOkAddress && (
               <button
                 onClick={(e) => confirmAddress(e)}
                 className="bg-transparent text-[#C26510] text-[17px] py-3 px-8 border border-[#C26510] rounded-3xl hover:bg-[#C26510] hover:text-white duration-500"
@@ -394,7 +411,6 @@ export function ShippingAddress(props) {
             >
               Update Address
             </button>
-
             <button
               onClick={(e) => handleCancelAddress(e)}
               className="bg-[#C26510] text-[17px] text-white py-3 px-8 border border-[#C26510] rounded-3xl hover:bg-transparent hover:text-[#C26510] duration-500"

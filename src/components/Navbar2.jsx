@@ -1,8 +1,5 @@
 import {
-  faCaretDown,
-  faCartPlus,
   faMagnifyingGlass,
-  faBars,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useRef, useState } from "react";
@@ -17,8 +14,6 @@ import { useUserInfoContext } from "../context/UserProvider";
 import axiosInstance from "../apis/axiosConfig";
 
 import { FiMessageCircle } from "react-icons/fi";
-import { getSender } from "./chatPage/ChatLogic";
-import { GoBell } from "react-icons/go";
 import { useSelector } from "react-redux";
 function Navbar2() {
   const translate = useSelector((state) => state.language.translation);

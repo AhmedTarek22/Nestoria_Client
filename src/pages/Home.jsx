@@ -30,6 +30,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Link, useNavigate } from "react-router-dom";
 import { FaStar } from "react-icons/fa";
 import { IoSendSharp } from "react-icons/io5";
+import axios from "axios";
 import Loader from "../components/Loader";
 import LazyLoadedItem from "../components/LazyLoadedItem";
 import { useSearchContext } from "../context/SearchContext";
@@ -37,7 +38,7 @@ import { useSelector } from "react-redux";
 import axiosInstance from "../apis/axiosConfig";
 
 function Home() {
-  const { myLang, translation } = useSelector((state) => state.language);
+    const { myLang, translation } = useSelector((state) => state.language);
   const translate = useSelector((state) => state.language.translation);
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -563,9 +564,7 @@ function Home() {
         <div className="container lg:w-[1440px] mx-auto my-10 px-3">
           <div className="flex justify-between items-center">
             <div className="flex-1">
-              <p className="text-[--mainColor]">
-                {translate.Sleek_And_Stylish}
-              </p>
+              <p className="text-[--mainColor]">{translate.Sleek_And_Stylish}</p>
               <h2 className="text-2xl md:text-3xl lg:text-6xl text-white my-5">
                 {translate.Innovative_Furniture}
               </h2>

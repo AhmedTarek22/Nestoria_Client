@@ -7,7 +7,7 @@ import {
   faHeart,
 } from "@fortawesome/free-solid-svg-icons";
 import { HeaderPages } from "../components/HeaderPages";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import Swal from "sweetalert2";
 import axiosInstance from "../apis/axiosConfig";
 import "react-toastify/dist/ReactToastify.css";
@@ -15,7 +15,7 @@ import ColorNamer from "color-namer";
 import { useSelector } from "react-redux";
 
 function WishlistPage() {
-  const { myLang, translation } = useSelector((state) => state.language);
+  const { myLang } = useSelector((state) => state.language);
 
   const translate = useSelector((state) => state.language.translation);
   const [wishlist, setWishlist] = useState([]);

@@ -24,7 +24,7 @@ function ProfileUser() {
   ];
   const [itemSelected, setItemSelected] = useState("Dashboard");
   const [typeAddress, setTypeAddress] = useState("");
-  const { currentUser, isLogin, setIsLogin } = useUserInfoContext();
+  const { currentUser, setIsLogin } = useUserInfoContext();
 
   const handleTypeAddress = (action) => {
     if (action === "Add") {
@@ -87,7 +87,7 @@ function ProfileUser() {
               </li>
             ))}
           </ul>
-          <div className="col-span-9 mt-6 md:mt-3 mx-10">
+          <div className="col-span-9 mt-6 md:mt-3 md:mx-10">
             {/* Dashboard */}
             {itemSelected === "Dashboard" && (
               <div>
@@ -118,7 +118,7 @@ function ProfileUser() {
                   <p className="text-[#A2A2A2]">
                     {translate.following_addresses}
                   </p>
-                  <div className="my-6 p-2 border-2 border-[#393939]">
+                  {/* <div className="my-6 p-2 border-2 border-[#393939]">
                     <div className="flex flex-col p-5 border-2 border-[#393939] border-dashed">
                       <div className="flex justify-between">
                         <h3 className="text-xl text-white">
@@ -135,9 +135,9 @@ function ProfileUser() {
                         {currentUser.fullName}
                       </span>
                     </div>
-                  </div>
+                  </div> */}
 
-                  <div className="p-2 border-2 border-[#393939]">
+                  <div className="my-6 p-2 border-2 border-[#393939]">
                     <div className="flex flex-col p-5 border-2 border-[#393939] border-dashed">
                       <div className="flex justify-between">
                         <h3 className="text-xl text-white">

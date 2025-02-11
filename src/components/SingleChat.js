@@ -9,7 +9,6 @@ import {
   serverTimestamp,
   doc,
   updateDoc,
-  limit,
 } from "firebase/firestore";
 import { db, storage } from "../firebase";
 import { useUserInfoContext } from "../context/UserProvider";

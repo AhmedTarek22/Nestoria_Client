@@ -2,22 +2,15 @@ import styles from "./Navbar.module.css";
 import { FaFacebookF } from "react-icons/fa";
 import { FaInstagram } from "react-icons/fa";
 import { FaWhatsapp } from "react-icons/fa6";
-import { LuIndianRupee } from "react-icons/lu";
-import { FaDollarSign } from "react-icons/fa6";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { IoMdArrowDropup } from "react-icons/io";
 
 import { useEffect, useRef, useState } from "react";
-import { BiArrowFromBottom } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { setLanguage } from "../Redux/languageSlice";
 
 function Navbar() {
   const [showCurrency, setShowCurrency] = useState(false);
-  const [currency, setCurrency] = useState(
-    "INR",
-    <LuIndianRupee className="text-white" />
-  );
 
   const dispatch = useDispatch();
   const switchToEnglish = () => {

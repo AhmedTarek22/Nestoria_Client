@@ -1,12 +1,6 @@
 import React, { useEffect, useState } from "react";
-import {
-  FaCheck,
-  FaStar,
-  FaShoppingCart,
-  FaHeart,
-  FaArrowsAltH,
-  FaExpand,
-} from "react-icons/fa";
+import axios from "axios";
+import {FaCheck, FaStar, FaShoppingCart} from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { GiCheckMark } from "react-icons/gi";
 import { useParams } from "react-router-dom";
@@ -16,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import ColorNamer from "color-namer";
 import { useSelector } from "react-redux";
+import { LuIndianRupee } from "react-icons/lu";
 
 function ProductDetails() {
   const translate = useSelector((state) => state.language.translation);
@@ -25,11 +20,20 @@ function ProductDetails() {
   const [isLoading, setIsLoading] = useState(false);
   const [newColors, setNewColors] = useState([]);
   const navigate = useNavigate();
-
+  const collectionName = [
+    `${translate.Home_Decoration}`,
+    `${translate.Office_Decoration}`,
+    `${translate.Indoor_Decoration}`,
+    `${translate.Outdoor_Decoration}`,
+  ];
+  const [categoryName, setCategoryName] = useState(
+    `${translate.Home_Decoration}`
+  );
+  const [collectionList, setCollectionList] = useState([]);
   useEffect(() => {
     setIsLoading(true);
-    axiosInstance
-      .get(`/api/v1/fur/products/${params.id}`)
+    axios
+      .get(`http://localhost:5000/api/v1/fur/products/${params.id}`)
       .then((res) => {
         setproduct(res.data.data.product);
         const convertColors = res.data.data.product.color.map((colorHex) => {
@@ -45,6 +49,24 @@ function ProductDetails() {
         setIsLoading(false);
       });
   }, [params.id]);
+
+  useEffect(() => {
+    const fetchCollection = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:5000/api/v1/fur/products/homeproducts"
+        );
+        const filteredCollection = response.data[1].homeProducts.filter(
+          (collection) => collection.category === categoryName
+        );
+        setCollectionList(filteredCollection);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchCollection();
+  }, [categoryName]);
 
   const [selectedColor, setSelectedColor] = useState(null);
   const [quantity, setQuantity] = useState(1);
@@ -73,13 +95,6 @@ function ProductDetails() {
   };
 
   const handleAddToCart = () => {
-    const isLogin = !!localStorage.getItem("token");
-    if (!isLogin) {
-      navigate("/login");
-      toast.error("you should signin first");
-      return;
-    }
-
     if (colorSelect === "") {
       return toast.error("Select color");
     }
@@ -93,7 +108,7 @@ function ProductDetails() {
       setQuantity((prevQuantity) => prevQuantity + 1);
       setMaxMessageShown(false);
     } else {
-      if(!maxMessageShown){
+      if (!maxMessageShown) {
         toast.error("This is the maximum.");
         setMaxMessageShown(true);
       }
@@ -105,7 +120,7 @@ function ProductDetails() {
       setQuantity((prevQuantity) => (prevQuantity > 1 ? prevQuantity - 1 : 1));
       setMinMessageShown(false);
     } else {
-      if(!minMessageShown){
+      if (!minMessageShown) {
         toast.error("This is the minimum.");
         setMinMessageShown(true);
       }
@@ -120,6 +135,7 @@ function ProductDetails() {
   const handleWorkshop = (id) => {
     navigate(`/workShopProfile/${id}`);
   };
+  
   if (isLoading) {
     return <Loader />;
   }
@@ -323,6 +339,7 @@ function ProductDetails() {
           </button>
         </div>
 
+        {/* Sections 1 */}
         <div className="mt-6">
           {activeTab === "description" && (
             <div className="p-6 rounded-lg text-white">
@@ -435,128 +452,79 @@ function ProductDetails() {
           )}
         </div>
       </div>
-      {/* قسم المنجات */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-        {/* Card 1 */}
-        <div className="relative group">
-          <img
-            src="/shop/shop-1-04.jpg"
-            alt="Product"
-            className="w-full h-full object-cover"
-          />
-          <img
-            src="/shop/shop-1-05.jpg"
-            alt="Product Hover"
-            className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-          />
-          <div className="absolute top-2 right-2 flex flex-col space-y-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-            <div className="p-2 bg-transparent rounded-full hover:bg-orange-500 transition-colors">
-              <FaHeart className="text-white" />
-            </div>
-            <div className="p-2 bg-transparent rounded-full hover:bg-orange-500 transition-colors">
-              <FaArrowsAltH className="text-white" />
-            </div>
-            <div className="p-2 bg-transparent rounded-full hover:bg-orange-500 transition-colors">
-              <FaExpand className="text-white" />
-            </div>
+      {/* Collection */}
+      <div className="w-full bg-[#2c2c2c]  py-[120px]">
+        <div className="container lg:w-[1440px] mx-auto flex flex-col justify-center items-center my-10">
+          <p className="text-[--mainColor]">{translate.EXPLORE_OUR}</p>
+          <h2 className="text-2xl md:text-4xl lg:text-6xl text-white">
+            {translate.Luxurious_Haven}
+          </h2>
+          <div className="collectionsName my-8 flex justify-center items-center px-3">
+            <ul className="flex justify-center items-center gap-4 text-white">
+              {collectionName.map((collection) => {
+                return (
+                  <li
+                    className={`cursor-pointer  ${
+                      collection === categoryName ? "border-b-[1px]" : ""
+                    }`}
+                    key={collection}
+                    onClick={() => {
+                      setCategoryName(collection);
+                    }}
+                  >
+                    {collection}
+                  </li>
+                );
+              })}
+            </ul>
           </div>
-          <div className="absolute bottom-0 left-0 right-0 text-center p-4 bg-black bg-opacity-75 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-            <Link to="/product-details" className="text-white">
-              Select Options
-            </Link>
-          </div>
-        </div>
-
-        {/* Card 2 */}
-        <div className="relative group">
-          <img
-            src="/shop/shop-2-01.jpg"
-            alt="Product"
-            className="w-full h-full object-cover"
-          />
-          <img
-            src="/shop/shop-2-02.jpg"
-            alt="Product Hover"
-            className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-          />
-          <div className="absolute top-2 right-2 flex flex-col space-y-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-            <div className="p-2 bg-transparent rounded-full hover:bg-orange-500 transition-colors">
-              <FaHeart className="text-white" />
+          {isLoading ? (
+            <Loader />
+          ) : (
+            // <h2>loader</h2>
+            <div className="boxs grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mx-auto px-3">
+              {collectionList.map((product) => {
+                return (
+                  <div className="box" key={product.id}>
+                    <div className="imgContainer relative hover:cursor-pointer hover:scale-105 transition-all duration-200">
+                      <Link to={`/product-details/${product.id}`}>
+                        <div className="relative group">
+                          <img
+                            src={product.images[0]}
+                            alt="collectionImg"
+                            className="rounded-lg"
+                          />
+                          <img
+                            src={product.images[1]}
+                            alt="Product Hover"
+                            className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                          />
+                        </div>
+                      </Link>
+                      <span className="absolute top-3 right-2 text-white bg-[--mainColor] p-1 text-xs rounded">
+                        {translate.ON_SALE}
+                      </span>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-[#e2e1e1d0] my-2">
+                        {product.category}
+                      </p>
+                      <h2 className="text-white text-md md:text-xl lg:text-2xl font-semibold">
+                        {myLang === "ar" ? product.nameInArabic : product.name}
+                      </h2>
+                      <p className="flex justify-center items-center text-white my-2">
+                        <LuIndianRupee />
+                        {product.price} - <LuIndianRupee /> {product.price + 50}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
-            <div className="p-2 bg-transparent rounded-full hover:bg-orange-500 transition-colors">
-              <FaArrowsAltH className="text-white" />
-            </div>
-            <div className="p-2 bg-transparent rounded-full hover:bg-orange-500 transition-colors">
-              <FaExpand className="text-white" />
-            </div>
-          </div>
-          <div className="absolute bottom-0 left-0 right-0 text-center p-4 bg-black bg-opacity-75 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-            <Link to="/product-details" className="text-white">
-              Select Options
-            </Link>
-          </div>
-        </div>
-
-        {/* Card 3 */}
-        <div className="relative group">
-          <img
-            src="/shop/shop-7-01.jpg"
-            alt="Product"
-            className="w-full h-full object-cover"
-          />
-          <img
-            src="/shop/shop-7-02.jpg"
-            alt="Product Hover"
-            className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-          />
-          <div className="absolute top-2 right-2 flex flex-col space-y-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-            <div className="p-2 bg-transparent rounded-full hover:bg-orange-500 transition-colors">
-              <FaHeart className="text-white" />
-            </div>
-            <div className="p-2 bg-transparent rounded-full hover:bg-orange-500 transition-colors">
-              <FaArrowsAltH className="text-white" />
-            </div>
-            <div className="p-2 bg-transparent rounded-full hover:bg-orange-500 transition-colors">
-              <FaExpand className="text-white" />
-            </div>
-          </div>
-          <div className="absolute bottom-0 left-0 right-0 text-center p-4 bg-black bg-opacity-75 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-            <Link to="/product-details" className="text-white">
-              Select Options
-            </Link>
-          </div>
-        </div>
-
-        {/* Card 4 */}
-        <div className="relative group">
-          <img
-            src="/shop/shop-11-01.jpg"
-            alt="Product"
-            className="w-full h-full object-cover"
-          />
-          <img
-            src="/shop/shop-11-04-1.jpg"
-            alt="Product Hover"
-            className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-          />
-          <div className="absolute top-2 right-2 flex flex-col space-y-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-            <div className="p-2 bg-transparent rounded-full hover:bg-orange-500 transition-colors">
-              <FaHeart className="text-white" />
-            </div>
-            <div className="p-2 bg-transparent rounded-full hover:bg-orange-500 transition-colors">
-              <FaArrowsAltH className="text-white" />
-            </div>
-            <div className="p-2 bg-transparent rounded-full hover:bg-orange-500 transition-colors">
-              <FaExpand className="text-white" />
-            </div>
-          </div>
-          <div className="absolute bottom-0 left-0 right-0 text-center p-4 bg-black bg-opacity-75 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-            <Link to="/product-details" className="text-white">
-              Select Options
-            </Link>
-          </div>
+          )}
         </div>
       </div>
+      {/* Collection */}
     </div>
   );
 }
